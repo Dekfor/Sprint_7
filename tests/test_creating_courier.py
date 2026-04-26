@@ -1,4 +1,4 @@
-import requests, allure
+import requests, allure, pytest
 from data.urls import URL_COURIER
 
 
@@ -43,11 +43,14 @@ class TestCreateCourier:
         assert response.json()["message"] == \
             "Этот логин уже используется"
 
-    @allure.title("Создание без заполнения поля пароля и имени")
-    def test_create_without_required_field_returns_error(self):
-        payload = {
-            "login": "nopassword123"
-        }
+    @allure.title("Создание без заполнения обязательного поля")
+
+    @pytest.mark.parametrize("payload", [
+        {"login": "nopassword123", "firstName": "saske"}, 
+        {"password": "1234", "firstName": "saske"},       
+    ])
+    
+    def test_create_without_required_field_returns_error(self, payload):
 
         response = requests.post(
             URL_COURIER,
@@ -57,20 +60,3 @@ class TestCreateCourier:
         assert response.status_code == 400
         assert response.json()["message"] == \
             "Недостаточно данных для создания учетной записи"
-
-    @allure.title("Создание без заполнения поля логина")
-    def test_create_without_login_returns_error(self):
-        payload = {
-            "password": "1234",
-            "firstName": "saske"
-        }
-
-        response = requests.post(
-            URL_COURIER,
-            data=payload
-        )
-
-        assert response.status_code == 400
-        assert response.json()["message"] == \
-            "Недостаточно данных для создания учетной записи"
-        
