@@ -6,14 +6,6 @@ from data.urls import URL_COURIER, URL_ORDER
 @pytest.fixture
 def courier():
     data = register_new_courier_and_return_login_password()
-
-    payload = {
-        "login": data[0],
-        "password": data[1],
-        "firstName": data[2]
-    }
-
-    requests.post(URL_COURIER, data=payload)
     yield data
 
     login_response = requests.post(URL_COURIER + "/login", data={
