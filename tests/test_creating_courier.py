@@ -1,4 +1,4 @@
-import requests, random, allure
+import requests, allure
 from data.urls import URL_COURIER
 
 
@@ -6,11 +6,11 @@ from data.urls import URL_COURIER
 class TestCreateCourier:
 
     @allure.title("Успешное создание")
-    def test_create_courier_success(self):
+    def test_create_courier_success(self, courier):
         payload = {
-            "login": f"ninja{random.randint(10000,99999)}",
-            "password": "1234",
-            "firstName": "saske"
+        "login": courier[0],
+        "password": courier[1],
+        "firstName": courier[2]
         }
 
         response = requests.post(
@@ -71,5 +71,4 @@ class TestCreateCourier:
         assert response.status_code == 400
         assert response.json()["message"] == \
             "Недостаточно данных для создания учетной записи"
-        
         

@@ -13,7 +13,7 @@ class TestCreateOrder:
     ])
 
     @allure.title("Проверка различных вариантов цвета самоката")
-    def test_create_order_with_different_colors(self, color):
+    def test_create_order_with_different_colors(self, color, cancel_order):
 
         payload = {
             "firstName": "Naruto",
@@ -34,4 +34,5 @@ class TestCreateOrder:
 
         assert response.status_code == 201
         assert "track" in response.json()
-        
+
+        cancel_order.append(response.json()["track"])
