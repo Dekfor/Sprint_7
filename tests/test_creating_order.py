@@ -12,6 +12,7 @@ class TestCreateOrder:
         []
     ])
 
+    @allure.title("Проверка различных вариантов цвета самоката")
     def test_create_order_with_different_colors(self, color):
 
         payload = {
