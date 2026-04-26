@@ -9,8 +9,8 @@ class TestLoginCourier:
     @allure.title("Успешная авторизация")
     def test_login_success(self, courier):
         payload = {
-            "login": courier[0],
-            "password": courier[1]
+            "login": courier["login"],
+            "password": courier["password"]
         }
 
         response = requests.post(
@@ -25,7 +25,7 @@ class TestLoginCourier:
     def test_login_wrong_password(self, courier):
 
         payload = {
-            "login": courier[0],
+            "login": courier["login"],
             "password": "wrong_password"
         }
 

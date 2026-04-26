@@ -1,4 +1,4 @@
-import requests, allure, pytest, random
+import requests, allure, pytest
 from data.urls import URL_COURIER
 from data.response_messages import COURIER_CREATE_ERROR, COURIER_DUPLICATE
 
@@ -6,18 +6,12 @@ from data.response_messages import COURIER_CREATE_ERROR, COURIER_DUPLICATE
 @allure.feature("Создание курьера")
 class TestCreateCourier:
 
-    @allure.title("Успешное создание курьера")
-    def test_create_courier_success(self):
-
-        payload = {
-            "login": f"test_{random.randint(10000, 99999)}",
-            "password": "1234",
-            "firstName": "saske"
-        }
+    @allure.title("Курьер создаётся успешно")
+    def test_create_courier_success(self, courier_data):
 
         response = requests.post(
             URL_COURIER,
-            data=payload
+            data=courier_data
         )
 
         assert response.status_code == 201

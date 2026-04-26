@@ -4,22 +4,33 @@ from data.urls import URL_COURIER, URL_ORDER
 
 
 @pytest.fixture
-def courier():
-    data = register_new_courier_and_return_login_password()
-    yield data
+def courier_data():
+    login, password, first_name = register_new_courier_and_return_login_password()
 
-    login_response = requests.post(URL_COURIER + "/login", data={
-        "login": data[0],
-        "password": data[1]
+    return {
+        "login": login,
+        "password": password,
+        "firstName": first_name
+    }
+
+@pytest.fixture
+def courier(courier_data):
+
+    requests.post(URL_COURIER, data=courier_data)
+    yield courier_data
+
+    login_resp = requests.post(URL_COURIER + "/login", data={
+        "login": courier_data["login"],
+        "password": courier_data["password"]
     })
 
-    if login_response.status_code == 200:
-        courier_id = login_response.json()["id"]
+    if login_resp.status_code == 200:
+        courier_id = login_resp.json()["id"]
         requests.delete(f"{URL_COURIER}/{courier_id}")
 
 @pytest.fixture
 def cancel_order():
-    tracks = []   
+    tracks = []
 
     yield tracks
 
