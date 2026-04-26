@@ -1,5 +1,6 @@
 import requests, pytest, allure
 from data.urls import URL_ORDER
+from data.base_order import BASE_ORDER
 
 
 @allure.feature("Создание заказа")
@@ -15,17 +16,8 @@ class TestCreateOrder:
     @allure.title("Проверка различных вариантов цвета самоката")
     def test_create_order_with_different_colors(self, color, cancel_order):
 
-        payload = {
-            "firstName": "Naruto",
-            "lastName": "Uchiha",
-            "address": "Konoha, 142 apt.",
-            "metroStation": 4,
-            "phone": "+7 800 355 35 35",
-            "rentTime": 5,
-            "deliveryDate": "2026-04-25",
-            "comment": "Saske, come back to Konoha",
-            "color": color
-        }
+        payload = BASE_ORDER.copy()
+        payload["color"] = color
 
         response = requests.post(
             URL_ORDER,

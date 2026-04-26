@@ -1,5 +1,6 @@
 import requests, allure
 from data.urls import URL_COURIER
+from data.response_messages import COURIER_LOGIN_ERROR, COURIER_NOT_FOUND
 
 
 @allure.feature("Логин курьера")
@@ -34,7 +35,7 @@ class TestLoginCourier:
         )
 
         assert response.status_code == 404
-        assert response.json()["message"] == "Учетная запись не найдена"
+        assert response.json()["message"] == COURIER_NOT_FOUND
 
     @allure.title("Авторизация без поля логин")
     def test_login_without_login(self):
@@ -48,7 +49,7 @@ class TestLoginCourier:
         )
 
         assert response.status_code == 400
-        assert response.json()["message"] == "Недостаточно данных для входа"
+        assert response.json()["message"] == COURIER_LOGIN_ERROR
 
     @allure.title("Авторизация несуществующей учетной записи")
     def test_login_nonexistent_user(self):
@@ -63,5 +64,5 @@ class TestLoginCourier:
         )
 
         assert response.status_code == 404
-        assert response.json()["message"] == "Учетная запись не найдена"
+        assert response.json()["message"] == COURIER_NOT_FOUND
      

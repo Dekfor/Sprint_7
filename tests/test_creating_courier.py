@@ -1,5 +1,6 @@
 import requests, allure, pytest
 from data.urls import URL_COURIER
+from data.response_messages import COURIER_CREATE_ERROR, COURIER_DUPLICATE
 
 
 @allure.feature("Создание курьера")
@@ -40,8 +41,7 @@ class TestCreateCourier:
         )
 
         assert response.status_code == 409
-        assert response.json()["message"] == \
-            "Этот логин уже используется"
+        assert response.json()["message"] == COURIER_DUPLICATE
 
     @allure.title("Создание без заполнения обязательного поля")
 
@@ -58,5 +58,4 @@ class TestCreateCourier:
         )
 
         assert response.status_code == 400
-        assert response.json()["message"] == \
-            "Недостаточно данных для создания учетной записи"
+        assert response.json()["message"] == COURIER_CREATE_ERROR 
