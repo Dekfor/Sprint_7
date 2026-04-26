@@ -40,6 +40,8 @@ class TestCreateCourier:
         )
 
         assert response.status_code == 409
+        assert response.json()["message"] == \
+            "Этот логин уже используется"
 
     @allure.title("Создание без заполнения поля пароля и имени")
     def test_create_without_required_field_returns_error(self):
